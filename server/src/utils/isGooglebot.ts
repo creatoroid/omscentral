@@ -1,0 +1,36 @@
+import { Request } from 'express';
+
+import { execute } from './execute';
+
+const getLastPiece = (s = '', separator = ' '): string =>
+  s.split(separator).pop() || '';
+
+/**
+ * Determines if an incoming HTTP request is from Googlebot.
+ *
+ * @param headers
+ * @returns True if so, false otherwise.
+ * @see https://support.google.com/webmasters/answer/80553
+ */
+export const isGooglebot = async (req: Request): Promise<boolean> => {
+  const fromIP = req.headers['x-forwarded-for'];
+  if (!fromIP) {
+    return false;
+  }
+
+  try {
+    const fromDomain = getLastPiece(await execute(`host ${fromIP}`));
+    if (!fromDomain || !/google(bot)?\.com$/.test(fromDomain)) {
+      return false;
+    }
+
+    const fromDomainIP = getLastPiece(await execute(`host ${fromDomain}`));
+    if (!fromDomainIP || fromDomainIP !== fromIP) {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+
+  return true;
+};

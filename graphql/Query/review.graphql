@@ -1,0 +1,25 @@
+query review($id: String!) {
+  review(id: $id) {
+    id
+    is_mine
+    course {
+      id
+      name
+    }
+    semester {
+      id
+      name
+      season
+    }
+    reports {
+      id
+      is_mine
+    }
+    difficulty
+    rating
+    workload
+    body
+    created
+    updated
+  }
+}

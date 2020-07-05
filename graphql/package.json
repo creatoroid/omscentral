@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "omscentral-graphql",
+  "version": "0.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Mehmet Bajin <mehmet.bajin@gatech.edu>",
+  "main": "schema.graphql",
+  "scripts": {
+    "build": "npm run generate",
+    "dev": "npm run generate && npm run watch:generate",
+    "format": "prettier --write ./schema.graphql ./**/*.graphql",
+    "format:package": "prettier-package-json --write package.json",
+    "generate": "VERBOSE=true graphql-codegen --config codegen.yml && cp ./schema.graphql ../server/src/graphql/schema.graphql",
+    "start": "",
+    "test": "run-s test:formatting",
+    "test:formatting": "prettier --check ./schema.graphql ./**/*.graphql",
+    "watch:generate": "chokidar './**/*.graphql' './schema.graphql' -c 'npm run generate'"
+  },
+  "dependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.10",
+    "@graphql-codegen/typescript-document-nodes": "2.2.10",
+    "@graphql-codegen/typescript-operations": "2.3.7",
+    "@graphql-codegen/typescript-react-apollo": "3.2.13",
+    "@graphql-codegen/typescript-resolvers": "2.6.3",
+    "graphql": "15.x",
+    "prettier": "2.6.2",
+    "typescript": "4.6.4"
+  },
+  "devDependencies": {
+    "chokidar-cli": "3.0.0",
+    "npm-run-all": "4.1.5",
+    "prettier-package-json": "2.6.3",
+    "ws": "8.6.0"
+  },
+  "engines": {
+    "node": "14.x"
+  }
+}

@@ -1,0 +1,14 @@
+query courseSeries($id: String!) {
+  courseSeries(id: $id) {
+    semester {
+      id
+      year
+      season
+      name
+    }
+    count
+    avg_difficulty
+    avg_rating
+    avg_workload
+  }
+}

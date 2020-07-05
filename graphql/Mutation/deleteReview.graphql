@@ -1,0 +1,14 @@
+mutation deleteReview($id: String!) {
+  deleteReview(id: $id) {
+    id
+    is_mine
+    course_id
+    semester_id
+    difficulty
+    workload
+    rating
+    body
+    created
+    updated
+  }
+}

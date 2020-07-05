@@ -1,0 +1,48 @@
+query course(
+  $id: String!
+  $semester_ids: [String!]! = []
+  $difficulties: [Int!]! = []
+  $ratings: [Int!]! = []
+) {
+  course(
+    id: $id
+    semester_ids: $semester_ids
+    difficulties: $difficulties
+    ratings: $ratings
+  ) {
+    id
+    department
+    number
+    name
+    aliases
+    foundational
+    deprecated
+    metric {
+      reviews {
+        count
+        difficulty {
+          mean
+          median
+          mode
+          min
+          max
+        }
+        workload {
+          mean
+          median
+          mode
+          min
+          max
+        }
+        rating {
+          mean
+          median
+          mode
+          min
+          max
+        }
+      }
+      semesters
+    }
+  }
+}

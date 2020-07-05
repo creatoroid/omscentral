@@ -1,0 +1,46 @@
+query reviews(
+  $order_by_desc: [String!]! = ["created"]
+  $offset: Int = 0
+  $limit: Int = 100
+  $is_mine: Boolean = false
+  $course_ids: [String!]! = []
+  $semester_ids: [String!]! = []
+  $difficulties: [Int!]! = []
+  $ratings: [Int!]! = []
+  $query: String = ""
+) {
+  reviews(
+    order_by_desc: $order_by_desc
+    offset: $offset
+    limit: $limit
+    is_mine: $is_mine
+    course_ids: $course_ids
+    semester_ids: $semester_ids
+    difficulties: $difficulties
+    ratings: $ratings
+    query: $query
+  ) {
+    id
+    is_mine
+    course {
+      id
+      name
+      link
+    }
+    semester {
+      id
+      name
+      season
+    }
+    reports {
+      id
+      is_mine
+    }
+    difficulty
+    rating
+    workload
+    body
+    created
+    updated
+  }
+}

@@ -1,0 +1,71 @@
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { SelectInputProps } from '@material-ui/core/Select/SelectInput';
+import Typography from '@material-ui/core/Typography';
+import { logEvent } from 'firebase/analytics';
+import React from 'react';
+import { useFirebase } from 'src/components/Firebase';
+import { Nullable } from 'src/core';
+import { Specialization } from 'src/graphql';
+
+interface Props {
+  className?: string;
+  onChange: (changeTo: Nullable<Specialization>) => void;
+  options?: Specialization[];
+  value?: Specialization;
+}
+
+const SpecializationSelect: React.FC<Props> = ({
+  className,
+  onChange,
+  options,
+  value,
+}) => {
+  const firebase = useFirebase();
+
+  const handleChange: SelectInputProps['onChange'] = (event) => {
+    const id = event.target.value;
+    if (!id) {
+      return onChange(null);
+    }
+
+    const specialization = options?.find((other) => other.id === id);
+    if (!specialization) {
+      return onChange(null);
+    }
+
+    logEvent(firebase.analytics, 'view_item_list', {
+      list_name: specialization.name,
+      item_list_name: specialization.name,
+      item_list_id: specialization.id,
+    });
+
+    onChange(specialization);
+  };
+
+  return (
+    <FormControl variant="filled" className={className}>
+      <InputLabel id="specialization-label">Specialization</InputLabel>
+      <Select
+        margin="dense"
+        labelId="specialization-label"
+        id="specialization"
+        value={value?.id || ''}
+        onChange={handleChange}
+      >
+        <MenuItem value="">
+          <Typography variant="overline">None</Typography>
+        </MenuItem>
+        {options?.map(({ id, name }) => (
+          <MenuItem key={id} value={id}>
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
+
+export default SpecializationSelect;
